@@ -1,3 +1,4 @@
+import Pokemon
 from Pokemon import *
 
 
@@ -15,22 +16,31 @@ class Pessoa:
         return self.nome
 
     def mostrar_pokemons(self):
-        for pokemon in self.pokemons:
-            print(pokemon)
+        if self.pokemons:
+            for pokemon in self.pokemons:
+                print("Pokemons de {}: {}".format(self, pokemon))
+        else:
+            print("{} não possuí pokemons".format(self))
 
 
 class Player(Pessoa):
     tipo = "player"
+
+    def capturar_pokemon(self, pokemon):
+        self.pokemons.append(pokemon)
+        print("{} Capturou um {} nivel {}!".format(self, pokemon.especie, pokemon.level))
 
 
 class Inimigo(Pessoa):
     tipo = "Inimigo"
 
 
-kevin_pokemon1 = PokemonFogo("Charmander", nome="José")
-kevin_pokemon2 = PokemonEletrico("Stunkfish", nome="Dinaldo")
-
-eu = Player(nome="kevin", pokemons=[kevin_pokemon1, kevin_pokemon2])
-
-
+eu = Player(nome="kevin")
 eu.mostrar_pokemons()
+
+pokemon_wild = PokemonAgua("Squirtle")
+
+eu.capturar_pokemon(pokemon_wild)
+eu.mostrar_pokemons()
+
+

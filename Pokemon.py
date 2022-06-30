@@ -10,7 +10,7 @@ class Pokemon:
             self.nome = especie
 
     def __str__(self):
-        return "{} ({}) level {}".format(self.especie, self.tipo, self.level)
+        return "{} ({}) level {} ".format(self.especie, self.tipo, self.level)
 
     def atacar(self, pokemon):
         print("{} usou arranhar em {}!".format(self.especie, pokemon.especie))
