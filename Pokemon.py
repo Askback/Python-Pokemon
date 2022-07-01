@@ -1,44 +1,65 @@
+import random
+
+
 class Pokemon:
 
-    def __init__(self, especie, level=1, nome=None):
+    def __init__(self, especie, level=None, nome=None):
         self.especie = especie
-        self.level = level
+        if level:
+            self.level = level
+        else:
+            self.level = random.randint(1, 100)
 
         if nome:
             self.nome = nome
         else:
             self.nome = especie
 
+        self.pontos_ataque = self.level * 2
+        self.pontos_vida = self.level * 5
+
     def __str__(self):
-        return "{} ({}) level {} ".format(self.especie, self.tipo, self.level)
+        return "{} level {} ".format(self.especie, self.level)
 
     def atacar(self, pokemon):
-        print("{} usou arranhar em {}!".format(self.especie, pokemon.especie))
+        pokemon.pontos_vida = pokemon.pontos_vida - (self.pontos_ataque * random.uniform(self.level, 3))
+        print("{} perdeu {:.1f} pontos de vida\n".format(pokemon, self.pontos_ataque * random.uniform(self.level, 3)))
+
+        if pokemon.pontos_vida <= 0:
+            print("{} Foi derrotado".format(pokemon))
+            return True
+        else:
+            return False
 
 
 class PokemonEletrico(Pokemon):
     tipo = "eletrico"
 
     def atacar(self, pokemon):
-        print("{} lançou um choque do trovão em {}!".format(self.especie, pokemon.especie))
+        print("{} lançou um choque do trovão em {}!\n".format(self.especie, pokemon.especie))
+        return super().atacar(pokemon)
 
 
 class PokemonFogo(Pokemon):
     tipo = "fogo"
 
     def atacar(self, pokemon):
-        print("{} lançou incendiar em {}!".format(self.especie, pokemon.especie))
+        print("{} lançou incendiar em {}!\n".format(self.especie, pokemon.especie))
+        return super().atacar(pokemon)
 
 
 class PokemonAgua(Pokemon):
     tipo = "agua"
 
     def atacar(self, pokemon):
-        print("{} lançou um jato d'água em {}!".format(self.especie, pokemon.especie))
+        print("{} lançou um jato d'água em {}!\n".format(self.especie, pokemon.especie))
+        return super().atacar(pokemon)
 
 
 class PokemonPlanta(Pokemon):
     tipo = "planta"
 
     def atacar(self, pokemon):
-        print("{} usou chicote de vinhas em {}!".format(self.especie, pokemon.especie))
+        print("{} usou chicote de vinhas em {}!\n".format(self.especie, pokemon.especie))
+        return super().atacar(pokemon)
+
