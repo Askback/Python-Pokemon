@@ -1,4 +1,6 @@
 import random
+import time
+
 from Pokemon import *
 
 NOMES = [
@@ -23,13 +25,14 @@ POKEMONS = [
 
 class Pessoa:
 
-    def __init__(self, nome=None, pokemons=[]):
+    def __init__(self, nome=None, pokemons=[], dinheiro=100):
         if nome:
             self.nome = nome
         else:
             self.nome = random.choice(NOMES)
 
         self.pokemons = pokemons
+        self.dinheiro = dinheiro
 
     def __str__(self):
         return self.nome
@@ -51,18 +54,29 @@ class Pessoa:
 
     def batalhar(self, pessoa):
         print("{} iniciou uma batalha com {} (ง︡'-'︠)ง\n".format(self, pessoa))
+        print(" -------------------------------------")
         pessoa.mostrar_pokemons()
+        print(" --#--#--#--#--#--#--#--#--#--#--#")
 
-        pokemon_inimigo = pessoa.escolher_pokemon()
         pokemon_aliado = self.escolher_pokemon()
+        pokemon_inimigo = pessoa.escolher_pokemon()
+        time.sleep(1)
+        print("\nA batalha começa em 3")
+        time.sleep(1)
+        print("\n2")
+        time.sleep(1)
+        print("\n1")
+        time.sleep(1)
 
         if pokemon_aliado and pokemon_inimigo:
             while True:
                 if pokemon_aliado.atacar(pokemon_inimigo):
                     print("\n{} ganhou a batalha ( ͡ᵔ ͜ʖ ͡ᵔ)".format(self))
+                    self.ganhar_dinheiro(random.randint(1, 3) * pokemon_inimigo.level)
                     break
                 if pokemon_inimigo.atacar(pokemon_aliado):
                     print("\n{} ganhou a batalha ( ͡ᵔ ͜ʖ ͡ᵔ)".format(pessoa))
+                    self.perder_dinheiro(random.randint(1, 3) * pokemon_inimigo.level)
                     break
         else:
             print("Essa batalha não pode ocorrer")
@@ -88,10 +102,56 @@ class Player(Pessoa):
                     print("\n{} eu escolho você\n".format(pokemon_escolhido))
                     print("-----------------------------\n")
                     return pokemon_escolhido
-                except:
-                    print("Escolha inválida")
+                except Exception as e:
+                    print("Erro não foi possivel localizar este pokemon",e)
         else:
             print("Esse jogador não possuí pokemons disponiveis (╥︣﹏᷅╥)\n")
+
+    def ganhar_dinheiro(self, quantidade):
+        self.dinheiro = self.dinheiro + quantidade
+        print("\nVocê ganhou {} coins".format(quantidade))
+        self.mostrar_dinheiro()
+
+    def perder_dinheiro(self, quantidade):
+        self.dinheiro = self.dinheiro - quantidade
+        print("\nVocê perdeu {} coins".format(quantidade))
+        self.mostrar_dinheiro()
+
+    def mostrar_dinheiro(self):
+        print("\nVocê possui atualmente {} coins".format(self.dinheiro))
+
+    def explorar(self):
+        if random.random() >= 0.5:
+            pokemon = random.choice(POKEMONS)
+            while True:
+                decisao = input("\nUm {} selvagem apareceu, deseja tentar capturar? s/n: ".format(pokemon))
+                if decisao == 's':
+                    if random.random() >= 0.5:
+                        self.capturar_pokemon(pokemon)
+                        break
+                    else:
+                        print("\nO pokemon escapou =(")
+                        break
+                elif decisao == 'n':
+                    print("\nBoa viagem, continue em frente")
+                    break
+                else:
+                    print("\nOpção inválida, escolha entre s/n")
+
+        elif random.random() >= 0.9:
+            inimigo = Inimigo()
+            while True:
+                decisao = input("\nO treinador {} te desafiou, deseja enfrenta-lo? s/n: ".format(inimigo))
+                if decisao == 's':
+                    self.batalhar(inimigo)
+                    break
+                elif decisao == 'n':
+                    print("\n Lembre-se, não da para fugir para sempre!")
+                    break
+                else:
+                    print("\nOpção inválida, escolha entre s/n")
+        else:
+            print("\n A exploração não deu em nada :(")
 
 
 class Inimigo(Pessoa):

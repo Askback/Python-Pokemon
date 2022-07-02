@@ -15,8 +15,8 @@ class Pokemon:
         else:
             self.nome = especie
 
-        self.pontos_ataque = self.level * 2
-        self.pontos_vida = self.level * 5
+        self.pontos_ataque = self.level * 1.25
+        self.pontos_vida = self.level * 3
 
     def __str__(self):
         return "{} level {} ".format(self.especie, self.level)
@@ -27,6 +27,7 @@ class Pokemon:
 
         if pokemon.pontos_vida <= 0:
             print("{} Foi derrotado".format(pokemon))
+            print("\n------------------------------------")
             return True
         else:
             return False
